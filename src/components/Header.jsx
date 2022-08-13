@@ -117,3 +117,4 @@ const SearchBar = styled.input`
   height: 100%;
   font-size: 14px;
 `;
+
