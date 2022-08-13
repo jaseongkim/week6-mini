@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import logo from "../images/logo.png";
 import { VscSearch } from "react-icons/vsc";
 
 const Header = () => {
-  let [boolean] = useState(false);
+  const navigate = useNavigate();
+
+  const member_Id = localStorage.getItem("memberId");
+  const logOut = () => {
+    localStorage.clear();
+    window.location.replace("/");
+  };
 
   return (
     <HeaderContainer>
@@ -11,7 +19,7 @@ const Header = () => {
         <Container>
           <InputGroup>
             <div style={{ display: "flex" }}>
-              <p>중고FORYOU</p>
+              <LoginLogo src={logo} onClick={() => navigate("/")} />
               <div style={{ width: "36px" }}></div>
               <SearchContainer>
                 <SearchForm>
@@ -26,13 +34,13 @@ const Header = () => {
                 />
               </SearchContainer>
             </div>
-            {boolean ? (
-              <p>Login</p>
+            {!member_Id ? (
+              <HeaderP onClick={() => navigate("/login")}>Login</HeaderP>
             ) : (
               <div style={{ display: "flex" }}>
-                <p>Logout</p>
+                <HeaderP onClick={logOut}>Logout</HeaderP>
                 <div style={{ width: "36px" }}></div>
-                <p>MyPage</p>
+                <HeaderP onClick={() => navigate("/MyPage")}>MyPage</HeaderP>
               </div>
             )}
           </InputGroup>
@@ -43,6 +51,25 @@ const Header = () => {
 };
 
 export default Header;
+
+const LoginLogo = styled.img`
+  margin: auto;
+  cursor: pointer;
+  &:hover {
+    scale: 1.1;
+  }
+`;
+
+const HeaderP = styled.p`
+  cursor: pointer;
+  font-weight: bold;
+  color: #0064ff;
+  opacity: 0.9;
+  &:hover {
+    opacity: 1;
+    scale: 1.1;
+  }
+`;
 
 const HeaderContainer = styled.header`
   border-radius: 0;
