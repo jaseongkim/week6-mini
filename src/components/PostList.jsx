@@ -1,83 +1,84 @@
-import React, { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { __getPostThunk } from "../redux/modules/postsSlice";
 import PostCards from "./PostCards";
 
 export const PostList = ({ category }) => {
-  let [products] = useState([
-    {
-      id: 1,
-      title: "안녕",
-      content: "나는 옷이에요",
-      price: "10000000원",
-    },
-    {
-      id: 1,
-      title: "안녕",
-      content: "나는 옷이에요",
-      price: "10000000원",
-    },
-    {
-      id: 1,
-      title: "안녕",
-      content: "나는 옷이에요",
-      price: "10000000원",
-    },
-    {
-      id: 1,
-      title: "안녕",
-      content: "나는 옷이에요",
-      price: "10000000원",
-    },
-    {
-      id: 1,
-      title: "안녕",
-      content: "나는 옷이에요",
-      price: "10000000원",
-    },
-    {
-      id: 1,
-      title: "안녕",
-      content: "나는 옷이에요",
-      price: "10000000원",
-    },
-  ]);
-  console.log(category);
+  const dispatch = useDispatch();
+
+  const { posts } = useSelector((state) => state.posts);
+
+  console.log(posts);
+
+  useEffect(() => {
+    dispatch(__getPostThunk());
+  }, [dispatch]);
 
   return (
     <>
-      {category == 0 ? (
-        <ListContainer>
-          <ListTitle>카테고리</ListTitle>
-          <ListWrapper>
-            {products.map((product) => {
-              return <PostCards product={product} />;
-            })}
-          </ListWrapper>
-          <ListTitle>카테고리</ListTitle>
-          <ListWrapper>
-            {products.map((product) => {
-              return <PostCards product={product} />;
-            })}
-          </ListWrapper>
-          <ListTitle>카테고리</ListTitle>
-          <ListWrapper>
-            {products.map((product) => {
-              return <PostCards product={product} />;
-            })}
-          </ListWrapper>
-        </ListContainer>
-      ) : category == 1 ? (
-        <ListContainer>
-          <ListTitle>카테고리</ListTitle>
-          <ListWrapper>
-            {products.map((product) => {
-              return <PostCards product={product} />;
-            })}
-          </ListWrapper>
-        </ListContainer>
-      ) : (
-        ""
-      )}
+      {
+        [
+          <ListContainer>
+            <ListTitle>의류</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+            <ListTitle>스포츠용품</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+            <ListTitle>도서</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+            <ListTitle>전자기기</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+          </ListContainer>,
+          <ListContainer>
+            <ListTitle>의류</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+          </ListContainer>,
+          <ListContainer>
+            <ListTitle>스포츠용품</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+          </ListContainer>,
+          <ListContainer>
+            <ListTitle>도서</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+          </ListContainer>,
+          <ListContainer>
+            <ListTitle>전자기기</ListTitle>
+            <ListWrapper>
+              {posts?.map((product) => {
+                return <PostCards key={product.id} product={product} />;
+              })}
+            </ListWrapper>
+          </ListContainer>,
+        ][category]
+      }
     </>
   );
 };

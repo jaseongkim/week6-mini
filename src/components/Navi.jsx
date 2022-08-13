@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Navi = ({setCartegory, category}) => {
-
+const Navi = ({ setCartegory }) => {
   return (
     <>
       <NaviContainer>
@@ -11,16 +10,16 @@ const Navi = ({setCartegory, category}) => {
             <NaviForm>
               <NaviGroup onClick={() => setCartegory(0)}>전체</NaviGroup>
               <NaviGroup margin="8px" onClick={() => setCartegory(1)}>
-                카테고리
+                의류
               </NaviGroup>
               <NaviGroup margin="8px" onClick={() => setCartegory(2)}>
-                카테고리
+                스포츠용품
               </NaviGroup>
               <NaviGroup margin="8px" onClick={() => setCartegory(3)}>
-                카테고리
+                도서
               </NaviGroup>
               <NaviGroup margin="8px" onClick={() => setCartegory(4)}>
-                카테고리
+                전자기기
               </NaviGroup>
             </NaviForm>
           </Container>

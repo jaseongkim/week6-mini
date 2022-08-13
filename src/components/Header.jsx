@@ -1,58 +1,48 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { VscSearch } from "react-icons/vsc";
-import Navi from "./Navi";
 
-const Header = ({ category, setCartegory}) => {
+const Header = () => {
   let [boolean] = useState(false);
-  console.log("안녕");
+
   return (
-    <Stiky>
-      <HeaderContainer>
-        <StContainer>
-          <Container>
-            <InputGroup>
+    <HeaderContainer>
+      <StContainer>
+        <Container>
+          <InputGroup>
+            <div style={{ display: "flex" }}>
+              <p>중고FORYOU</p>
+              <div style={{ width: "36px" }}></div>
+              <SearchContainer>
+                <SearchForm>
+                  <SearchBar></SearchBar>
+                </SearchForm>
+                <VscSearch
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "18px",
+                  }}
+                  onClick={() => {}}
+                />
+              </SearchContainer>
+            </div>
+            {boolean ? (
+              <p>Login</p>
+            ) : (
               <div style={{ display: "flex" }}>
-                <p>중고FORYOU</p>
+                <p>Logout</p>
                 <div style={{ width: "36px" }}></div>
-                <SearchContainer>
-                  <SearchForm>
-                    <SearchBar></SearchBar>
-                  </SearchForm>
-                  <VscSearch
-                    style={{
-                      cursor: "pointer",
-                      fontSize: "18px",
-                    }}
-                    onClick={() => {}}
-                  />
-                </SearchContainer>
+                <p>MyPage</p>
               </div>
-              {boolean ? (
-                <p>Login</p>
-              ) : (
-                <div style={{ display: "flex" }}>
-                  <p>Logout</p>
-                  <div style={{ width: "36px" }}></div>
-                  <p>MyPage</p>
-                </div>
-              )}
-            </InputGroup>
-          </Container>
-        </StContainer>
-      </HeaderContainer>
-      <Navi category={category} setCartegory={setCartegory}/>
-    </Stiky>
+            )}
+          </InputGroup>
+        </Container>
+      </StContainer>
+    </HeaderContainer>
   );
 };
 
 export default Header;
-
-const Stiky = styled.section`
-  position: sticky;
-  top: 0;
-  z-index: 1;
-`;
 
 const HeaderContainer = styled.header`
   border-radius: 0;

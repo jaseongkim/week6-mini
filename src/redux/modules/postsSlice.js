@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import instance from "./instance";
 
 export const __getPostThunk = createAsyncThunk(
   "GET_TODO",
-  async (arg, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const { data } = await axios.get();
-      return thunkAPI.fulfillWithValue(data);
+      const { data } = await instance.get("posts");
+      console.log(data);
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
     }
@@ -16,24 +17,23 @@ export const __getPostThunk = createAsyncThunk(
 const initialState = {
   posts: [],
   error: null,
-  isLoading: false,
 };
 
 export const postsSlice = createSlice({
-  name: "todos",
+  name: "posts",
   initialState,
-  reducers: {
-    clearTodo: (state) => {
-      state.todo = {
-        id: 0,
-        body: "",
-        username: "",
-        title: "",
-      };
+  reducers: {},
+  extraReducers: {
+    [__getPostThunk.fulfilled]: (state, action) => {
+      state.posts = action.payload;
+      console.log(state.posts);
     },
+    [__getPostThunk.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [__getPostThunk.pending]: () => {},
   },
-  extraReducers: {},
 });
 
-export const {} = postsSlice.actions;
+// export const {} = postsSlice.actions;
 export default postsSlice.reducer;
