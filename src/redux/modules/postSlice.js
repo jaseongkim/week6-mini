@@ -14,17 +14,21 @@ export const __getPostThunk = createAsyncThunk(
 );
 
 const initialState = {
-  todo: {},
+  post: {
+    id: 0,
+    body: "",
+    username: "",
+    title: "",
+  },
   error: null,
-  isLoading: false,
 };
 
 export const postSlice = createSlice({
-  name: "todos",
+  name: "post",
   initialState,
   reducers: {
     clearTodo: (state) => {
-      state.todo = {
+      state.post = {
         id: 0,
         body: "",
         username: "",
@@ -35,5 +39,5 @@ export const postSlice = createSlice({
   extraReducers: {},
 });
 
-export const {} = postSlice.actions;
+export const { clearTodo } = postSlice.actions;
 export default postSlice.reducer;
