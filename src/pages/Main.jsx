@@ -1,7 +1,15 @@
 import React from "react";
+import Header from "../components/Header";
+import Layout from "../components/Layout";
+import { PostList } from "../components/PostList";
 
 const Main = () => {
-  return <div>Main페이지 입니다.</div>;
+  return (
+    <Layout>
+      <Header />
+      <PostList />
+    </Layout>
+  );
 };
 
 export default Main;

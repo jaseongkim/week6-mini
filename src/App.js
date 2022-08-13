@@ -6,6 +6,7 @@ import Detail from "./pages/Detail";
 import Mypage from "./pages/Mypage";
 import Posting from "./pages/Posting";
 
+
 function App() {
   return (
     <Routes>
