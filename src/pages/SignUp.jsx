@@ -23,25 +23,39 @@ const SignUp = () => {
     });
   }, 300);
 
+  const member_Id = localStorage.getItem("memberId");
+  const areadyLogin = () => {
+    window.location.replace("/");
+  };
+
   return (
-    <LoginBody>
-      <LoginMinBody>
-        {windowSize.width <= 1200 ? (
-          <LoginSmallBody>
-            <SignUpForm />
-          </LoginSmallBody>
-        ) : (
-          <LoginSmallBody>
-            <LoginFormBody>
-              <SignUpForm />
-            </LoginFormBody>
-            <LoginFormBody>
-              <LoginImgBody></LoginImgBody>
-            </LoginFormBody>
-          </LoginSmallBody>
-        )}
-      </LoginMinBody>
-    </LoginBody>
+    <>
+      {member_Id ? (
+        <>
+          <div>{member_Id}님 이미 로그인 하셨습니다.</div>
+          <button onClick={areadyLogin}>뒤로가기</button>
+        </>
+      ) : (
+        <LoginBody>
+          <LoginMinBody>
+            {windowSize.width <= 1200 ? (
+              <LoginSmallBody>
+                <SignUpForm />
+              </LoginSmallBody>
+            ) : (
+              <LoginSmallBody>
+                <LoginFormBody>
+                  <SignUpForm />
+                </LoginFormBody>
+                <LoginFormBody>
+                  <LoginImgBody></LoginImgBody>
+                </LoginFormBody>
+              </LoginSmallBody>
+            )}
+          </LoginMinBody>
+        </LoginBody>
+      )}
+    </>
   );
 };
 
