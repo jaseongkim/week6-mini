@@ -10,8 +10,18 @@ export const createMemberDB = (data) => {
         withCredentials: true,
       })
       .then((response) => {
+        if (response.data.success === false) {
+          return window.alert(response.data.error.message);
+        } else {
+          return (
+            window.alert(
+              `${response.data.data.memberId}님 회원가입을 축하드립니다!`
+            ),
+            window.location.replace("/")
+          );
+        }
         console.log(response);
-        window.location.replace("/");
+        // window.location.replace("/");
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -34,30 +44,17 @@ export const loginMemberDB = (data) => {
           return window.alert(response.data.error.message);
         } else {
           return (
-            console.log(response),
+            // console.log(response),
             localStorage.setItem("token", response.headers.authorization),
             localStorage.setItem("memberId", response.data.data.memberId),
             alert(`${localStorage.memberId}님 환영합니다.`),
             window.location.replace("/")
-          )
+          );
         }
-
-        // localStorage.setItem("refreshToken", response.data.refreshToken);
-        // localStorage.setItem("user_id", response.headers.memberId);
       })
       .catch((response) => {
         console.log(response);
       });
-  };
-};
-
-export const logOutDB = (data) => {
-  console.log(data);
-  return async function (dispatch) {
-    await instance.post("/user/logout", data, {
-      "Content-Type": "application/json",
-      withCredentials: true,
-    });
   };
 };
 
