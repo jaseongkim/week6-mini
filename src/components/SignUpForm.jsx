@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import logo from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
+import { createMemberDB } from "../redux/modules/membersSlice";
+import { useDispatch } from "react-redux";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const initialState = {
     memberId: "",
@@ -12,12 +15,8 @@ const SignUpForm = () => {
     password2: "",
   };
 
-  let [passwordType, setPasswordType] = useState({
-    type: "password",
-    visible: false,
-  });
-  let [passwordCheck, setPasswordCheck] = useState();
-  let [memberIdCheck, setmemberIdCheck] = useState();
+  let [passwordCheck, setPasswordCheck] = useState(false);
+  let [memberIdCheck, setmemberIdCheck] = useState(false);
 
   const [member, setMember] = useState(initialState);
 
@@ -58,6 +57,17 @@ const SignUpForm = () => {
     }
   }, [member.memberId]);
 
+  const createMember = () => {
+    if (memberIdCheck === false || passwordCheck === false) {
+      window.alert("아이디와 비밀번호를 맞게 설정해주세요");
+    } else {
+     dispatch(createMemberDB({
+        memberId: member.memberId,
+        password: member.password
+      }));
+    }
+  };
+
   return (
     <LoginFormFrame>
       <LoginFormBox>
@@ -84,7 +94,7 @@ const SignUpForm = () => {
         )}
         <LoginText>비밀번호</LoginText>
         <LoginInput
-          type={passwordType.type}
+          type="password"
           name="password"
           value={member.password}
           onChange={onSignUPHandler}
@@ -105,7 +115,7 @@ const SignUpForm = () => {
 
         <LoginText>비밀번호 확인</LoginText>
         <LoginInput
-          type={passwordType.type}
+          type="password"
           name="password2"
           value={member.password2}
           onChange={onSignUPHandler}
@@ -116,7 +126,7 @@ const SignUpForm = () => {
           ""
         )}
 
-        <LoginButton>회원가입 하기 </LoginButton>
+        <LoginButton onClick={createMember}>회원가입 하기 </LoginButton>
       </LoginFormBox>
     </LoginFormFrame>
   );

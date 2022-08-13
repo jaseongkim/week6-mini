@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import logo from "../images/logo.png";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginMemberDB } from "../redux/modules/membersSlice";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //인풋값설정USEREF
+
+  const memberId_ref = useRef(null);
+  const password_ref = useRef(null);
+
+  //유효성 검사 및 로그인
+  const login = async () => {
+    if (memberId_ref.current.value == "" || password_ref.current.value == "") {
+      window.alert("아이디와 비밀번호를 입력하세요");
+    } else {
+      await dispatch(
+        loginMemberDB({
+          memberId: memberId_ref.current.value,
+          password: password_ref.current.value,
+        })
+      );
+    }
+  };
+
+  //엔터키 활성화?
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      login();
+    }
+  };
 
   return (
     <LoginFormFrame>
@@ -13,11 +42,13 @@ const LoginForm = () => {
         <h2>로그인</h2>
 
         <LoginText>ID</LoginText>
-        <LoginInput />
+        <LoginInput type="text" ref={memberId_ref} />
         <LoginText>비밀번호</LoginText>
-        <LoginInput />
-        <GotoSignUp onClick={() => navigate("/signup")}>회원가입하기</GotoSignUp>
-        <LoginButton>로그인 하기 </LoginButton>
+        <LoginInput type="password" ref={password_ref} />
+        <GotoSignUp onClick={() => navigate("/signup")}>
+          회원가입하기
+        </GotoSignUp>
+        <LoginButton onClick={login}>로그인 하기 </LoginButton>
       </LoginFormBox>
     </LoginFormFrame>
   );
@@ -85,7 +116,7 @@ const GotoSignUp = styled.div`
   font-size: 10px;
   opacity: 0.5;
   cursor: pointer;
-  &:hover{
+  &:hover {
     opacity: 1;
   }
 `;

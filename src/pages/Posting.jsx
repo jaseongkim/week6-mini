@@ -13,6 +13,14 @@ const Posting = () => {
 
   const [fileImage, setFileImage] = useState("");
 
+  // const [newPosting, setNewPosting] = useState({
+  //   title,
+  //   content,
+  //   price,
+  //   category,
+  //   img,
+  // })
+
   console.log(fileImage);
 
   // 파일 저장
