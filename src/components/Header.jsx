@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { VscSearch } from "react-icons/vsc";
 import Navi from "./Navi";
 
-const Header = () => {
+const Header = ({ category, setCartegory}) => {
   let [boolean] = useState(false);
   console.log("안녕");
   return (
@@ -41,7 +41,7 @@ const Header = () => {
           </Container>
         </StContainer>
       </HeaderContainer>
-      <Navi />
+      <Navi category={category} setCartegory={setCartegory}/>
     </Stiky>
   );
 };
@@ -117,4 +117,3 @@ const SearchBar = styled.input`
   height: 100%;
   font-size: 14px;
 `;
-

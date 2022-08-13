@@ -1,24 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
-const Navi = () => {
+const Navi = ({setCartegory, category}) => {
+
   return (
     <>
       <NaviContainer>
         <StContainer>
           <Container>
             <NaviForm>
-              <NaviGroup onClick={() => {}}>전체</NaviGroup>
-              <NaviGroup margin="8px" onClick={() => {}}>
+              <NaviGroup onClick={() => setCartegory(0)}>전체</NaviGroup>
+              <NaviGroup margin="8px" onClick={() => setCartegory(1)}>
                 카테고리
               </NaviGroup>
-              <NaviGroup margin="8px" onClick={() => {}}>
+              <NaviGroup margin="8px" onClick={() => setCartegory(2)}>
                 카테고리
               </NaviGroup>
-              <NaviGroup margin="8px" onClick={() => {}}>
+              <NaviGroup margin="8px" onClick={() => setCartegory(3)}>
                 카테고리
               </NaviGroup>
-              <NaviGroup margin="8px" onClick={() => {}}>
+              <NaviGroup margin="8px" onClick={() => setCartegory(4)}>
                 카테고리
               </NaviGroup>
             </NaviForm>

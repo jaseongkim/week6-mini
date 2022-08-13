@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import PostCards from "./PostCards";
 
-export const PostList = () => {
+export const PostList = ({ category }) => {
   let [products] = useState([
     {
       id: 1,
@@ -41,28 +41,44 @@ export const PostList = () => {
       price: "10000000원",
     },
   ]);
+  console.log(category);
 
   return (
-    <ListContainer>
-      <ListTitle>카테고리</ListTitle>
-      <ListWrapper>
-        {products.map((product) => {
-          return <PostCards product={product} />;
-        })}
-      </ListWrapper>
-      <ListTitle>카테고리</ListTitle>
-      <ListWrapper>
-        {products.map((product) => {
-          return <PostCards product={product} />;
-        })}
-      </ListWrapper>
-      <ListTitle>카테고리</ListTitle>
-      <ListWrapper>
-        {products.map((product) => {
-          return <PostCards product={product} />;
-        })}
-      </ListWrapper>
-    </ListContainer>
+    <>
+      {category == 0 ? (
+        <ListContainer>
+          <ListTitle>카테고리</ListTitle>
+          <ListWrapper>
+            {products.map((product) => {
+              return <PostCards product={product} />;
+            })}
+          </ListWrapper>
+          <ListTitle>카테고리</ListTitle>
+          <ListWrapper>
+            {products.map((product) => {
+              return <PostCards product={product} />;
+            })}
+          </ListWrapper>
+          <ListTitle>카테고리</ListTitle>
+          <ListWrapper>
+            {products.map((product) => {
+              return <PostCards product={product} />;
+            })}
+          </ListWrapper>
+        </ListContainer>
+      ) : category == 1 ? (
+        <ListContainer>
+          <ListTitle>카테고리</ListTitle>
+          <ListWrapper>
+            {products.map((product) => {
+              return <PostCards product={product} />;
+            })}
+          </ListWrapper>
+        </ListContainer>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 
