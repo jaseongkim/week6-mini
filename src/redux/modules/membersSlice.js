@@ -11,7 +11,6 @@ export const createMemberDB = (data) => {
       })
       .then((response) => {
         console.log(response);
-        // window.alert(response.message);
         window.location.replace("/");
       })
       .catch((error) => {
@@ -31,16 +30,24 @@ export const loginMemberDB = (data) => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response);
-        localStorage.setItem("token", response.headers.authorization);
-        // window.location.replace("/");
+        if (response.data.success === false) {
+          return window.alert(response.data.error.message);
+        } else {
+          return (
+            console.log(response),
+            localStorage.setItem("token", response.headers.authorization),
+            localStorage.setItem("memberId", response.data.data.memberId),
+            alert(`${localStorage.memberId}님 환영합니다.`),
+            window.location.replace("/")
+          )
+        }
+
         // localStorage.setItem("refreshToken", response.data.refreshToken);
         // localStorage.setItem("user_id", response.headers.memberId);
-    })
+      })
       .catch((response) => {
-        console.log(response)
+        console.log(response);
       });
-
   };
 };
 
@@ -65,7 +72,6 @@ const memberSlice = createSlice({
     },
   },
 });
-
 
 export const { loadMember } = memberSlice.actions;
 export default memberSlice.reducer;
