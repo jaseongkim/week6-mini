@@ -1,15 +1,21 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { FaPenSquare, FaTrash } from "react-icons/fa";
 
 const CommentCards = ({ id, comment, post }) => {
+  const member_Id = localStorage.getItem("memberId");
+
   return (
     <CommentBox>
       <Commentwrap>
-        <CommentID>{comment.memberId}</CommentID>
+        {post.memberId === comment.memberId ? (
+          <OnerPostId>판매자</OnerPostId>
+        ) : (
+          <CommentID>{comment.memberId}</CommentID>
+        )}
         <CommentBody>{comment.content}</CommentBody>
       </Commentwrap>
-      {post.memberId === comment.memberId ? (
+      {member_Id === comment.memberId ? (
         <EditCommentContainer>
           <EditCommentBox>
             <FaPenSquare />
@@ -41,6 +47,36 @@ const Commentwrap = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
+`;
+const OnerKeyFrame = keyframes`
+  0% {
+      background: #E782FF;
+      color: white;
+  }
+
+  50%{
+    background: #82ff93;
+      color: white;
+   
+  }
+
+  100% {  
+    background: #ffd782;
+      color: white;
+  }
+`;
+const OnerPostId = styled.div`
+  height: 30px;
+  box-sizing: border-box;
+  width: 20%;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  animation-name: ${OnerKeyFrame};
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: linear;
 `;
 
 const CommentID = styled.div`

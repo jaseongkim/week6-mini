@@ -19,7 +19,34 @@ const CommentBox = ({ id, post }) => {
     (state) => state.post.post.data.commentResponseDtoList
   );
 
-  console.log(comment);
+  const member_Id = localStorage.getItem("memberId");
+
+  const noLogin = () => {
+    alert("로그인해주세요!");
+  };
+
+  const initialState = {
+    postId: "",
+    content: "",
+  };
+
+  const [newComment, setNewComment] = useState(initialState);
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setNewComment({ ...newComment, [name]: value, postId: id });
+  };
+
+  const onSubmitHandler = (e) => {
+    if (newComment === "") {
+      e.preventDefault();
+      alert("내용을 입력해주세요");
+    } else {
+      e.preventDefault();
+      dispatch(getPostThunk(newComment));
+      setNewComment(initialState);
+    }
+  };
 
   if (comment === undefined) {
     return (
@@ -31,10 +58,22 @@ const CommentBox = ({ id, post }) => {
         ) : (
           <ShowPostingContainer>
             <CommentDown onClick={show}>댓글 안보기</CommentDown>
-            <CommentInputBox>
-              <CommentInput />
-              <CommentButton>입력</CommentButton>
-            </CommentInputBox>
+            {!member_Id ? (
+              <CommentInputBox>
+                <CommentInput placeholder="로그인 후 이용 가능합니다." />
+                <CommentButton onClick={noLogin}>입력</CommentButton>
+              </CommentInputBox>
+            ) : (
+              <CommentInputBox>
+                <CommentInput
+                  type="text"
+                  name="content"
+                  value={newComment.content}
+                  onChange={onChangeHandler}
+                />
+                <CommentButton onClick={onSubmitHandler}>입력</CommentButton>
+              </CommentInputBox>
+            )}
           </ShowPostingContainer>
         )}
       </>
@@ -50,12 +89,26 @@ const CommentBox = ({ id, post }) => {
       ) : (
         <ShowPostingContainer>
           <CommentDown onClick={show}>댓글 안보기</CommentDown>
-          <CommentInputBox>
-            <CommentInput />
-            <CommentButton>입력</CommentButton>
-          </CommentInputBox>
+          {!member_Id ? (
+            <CommentInputBox>
+              <CommentInput placeholder="로그인 후 이용 가능합니다." />
+              <CommentButton onClick={noLogin}>입력</CommentButton>
+            </CommentInputBox>
+          ) : (
+            <CommentInputBox>
+              <CommentInput
+                type="text"
+                name="content"
+                value={newComment.content}
+                onChange={onChangeHandler}
+              />
+              <CommentButton onClick={onSubmitHandler}>입력</CommentButton>
+            </CommentInputBox>
+          )}
           {comment?.map((comment) => {
-            return <CommentCards key={comment.id} comment={comment} post={post} />;
+            return (
+              <CommentCards key={comment.id} comment={comment} post={post} />
+            );
           })}
         </ShowPostingContainer>
       )}

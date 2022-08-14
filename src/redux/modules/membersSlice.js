@@ -20,8 +20,6 @@ export const createMemberDB = (data) => {
             window.location.replace("/")
           );
         }
-        console.log(response);
-        // window.location.replace("/");
       })
       .catch((error) => {
         if (error.response.status === 400) {
