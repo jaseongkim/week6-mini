@@ -44,6 +44,22 @@ export const deletCommentThunk = createAsyncThunk(
   }
 );
 
+export const editCommentThunk = createAsyncThunk(
+  "editComment",
+  async (payload, thunkAPI) => {
+    try {
+      await instance.put(
+        `auth/posts/${payload.postId}/comments/${payload.id}`,
+        { content: payload.content },
+        { withCredentials: true }
+      );
+      return thunkAPI.fulfillWithValue(payload);
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e);
+    }
+  }
+);
+
 const initialState = {
   comments: [],
   error: null,
@@ -52,7 +68,17 @@ const initialState = {
 export const commentsSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {},
+  reducers: {
+    onEditHandler: (state, action) => {
+      state.comments.map((comment) => {
+        if (comment.id === action.payload) {
+          return (comment.isEditMode = !comment.isEditMode);
+        } else {
+          return state;
+        }
+      });
+    },
+  },
   extraReducers: {
     [getCommentsThunk.fulfilled]: (state, action) => {
       state.comments = action.payload;
@@ -82,7 +108,22 @@ export const commentsSlice = createSlice({
     },
     [deletCommentThunk.rejected]: () => {},
     [deletCommentThunk.pending]: () => {},
+    [editCommentThunk.fulfilled]: (state, action) => {
+      state.comments.map((comment) => {
+        if (comment.id == action.payload.id) {
+          return (
+            (comment.content = action.payload.content),
+            (comment.isEditMode = !comment.isEditMode)
+          );
+        }
+        return comment;
+      });
+    },
+
+    [editCommentThunk.rejected]: () => {},
+    [editCommentThunk.pending]: () => {},
   },
 });
 
+export let { onEditHandler } = commentsSlice.actions;
 export default commentsSlice.reducer;

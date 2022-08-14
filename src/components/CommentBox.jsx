@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+import { onEditHandler } from "../redux/modules/commentsSlice";
 import {
   createCommentThunk,
   getCommentsThunk,
   deletCommentThunk,
+  editCommentThunk,
 } from "../redux/modules/commentsSlice";
-import { FaPenSquare, FaTrash } from "react-icons/fa";
+import { FaPenSquare, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 
 const CommentBox = ({ id, post }) => {
   const dispatch = useDispatch();
@@ -36,6 +38,7 @@ const CommentBox = ({ id, post }) => {
   };
 
   const [newComment, setNewComment] = useState(initialState);
+  const [editComment, setEditComment] = useState(initialState);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -49,6 +52,16 @@ const CommentBox = ({ id, post }) => {
     } else {
       dispatch(createCommentThunk(newComment));
       setNewComment(initialState);
+    }
+  };
+
+  const onEditSubmitHandler = (e) => {
+    if (editComment.content === "") {
+      e.preventDefault();
+      alert("내용을 입력해주세요");
+    } else {
+      dispatch(editCommentThunk(editComment));
+      setEditComment(initialState);
     }
   };
 
@@ -112,30 +125,64 @@ const CommentBox = ({ id, post }) => {
           {comments.map((comment) => {
             return (
               <CommentB key={comment.id}>
-                <Commentwrap>
-                  {post.memberId === comment.memberId ? (
-                    <OnerPostId>판매자</OnerPostId>
-                  ) : (
-                    <CommentID>{comment.memberId}</CommentID>
-                  )}
-                  <CommentBody>{comment.content}</CommentBody>
-                </Commentwrap>
-                {member_Id === comment.memberId ? (
-                  <EditCommentContainer>
-                    <EditCommentBox>
-                      <FaPenSquare />
-                    </EditCommentBox>
-                    <DeleteCommentBox
-                      onClick={() => {
-                        console.log(comment);
-                        dispatch(deletCommentThunk(comment));
-                      }}
-                    >
-                      <FaTrash />
-                    </DeleteCommentBox>
-                  </EditCommentContainer>
+                {!comment.isEditMode ? (
+                  <>
+                    <Commentwrap>
+                      {post.memberId === comment.memberId ? (
+                        <OnerPostId>판매자</OnerPostId>
+                      ) : (
+                        <CommentID>{comment.memberId}</CommentID>
+                      )}
+                      <CommentBody>{comment.content}</CommentBody>
+                    </Commentwrap>
+                    {member_Id === comment.memberId ? (
+                      <EditCommentContainer>
+                        <EditCommentBox>
+                          <FaPenSquare
+                            onClick={() => dispatch(onEditHandler(comment.id))}
+                          />
+                        </EditCommentBox>
+                        <DeleteCommentBox
+                          onClick={() => {
+                            dispatch(deletCommentThunk(comment));
+                          }}
+                        >
+                          <FaTrash />
+                        </DeleteCommentBox>
+                      </EditCommentContainer>
+                    ) : (
+                      ""
+                    )}{" "}
+                  </>
                 ) : (
-                  ""
+                  <>
+                    <Commentwrap>
+                      <EditCommentBody
+                        type="text"
+                        name="content"
+                        value={editComment.content}
+                        onChange={(e) => {
+                          const { name, value } = e.target;
+                          setEditComment({
+                            ...editComment,
+                            [name]: value,
+                            id: comment.id,
+                            postId: id,
+                          });
+                        }}
+                      />
+                    </Commentwrap>
+                    <EditCommentContainer>
+                      <CheckCommentBox>
+                        <FaCheck onClick={onEditSubmitHandler} />
+                      </CheckCommentBox>
+                      <DeleteCommentBox>
+                        <FaTimes
+                          onClick={() => dispatch(onEditHandler(comment.id))}
+                        />
+                      </DeleteCommentBox>
+                    </EditCommentContainer>
+                  </>
                 )}
               </CommentB>
             );
@@ -286,6 +333,17 @@ const CommentBody = styled.div`
   padding-top: 3px;
 `;
 
+const EditCommentBody = styled.input`
+  min-height: 30px;
+  width: 100%;
+  border: none;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-top: 3px;
+`;
+
 const EditCommentContainer = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -304,6 +362,15 @@ const EditCommentBox = styled.div`
     scale: 1.1;
   }
 `;
+
+const CheckCommentBox = styled.div`
+  cursor: pointer;
+  color: #1add3b;
+  &:hover {
+    scale: 1.1;
+  }
+`;
+
 const DeleteCommentBox = styled.div`
   cursor: pointer;
   color: #0064ff;
