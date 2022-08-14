@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getPostThunk } from "../redux/modules/postSlice";
 import CommentCards from "./CommentCards";
 
-const CommentBox = ({ id }) => {
+const CommentBox = ({ id, post }) => {
   const dispatch = useDispatch();
   const [commentShow, setCommentShow] = useState(false);
   const show = () => {
@@ -55,7 +55,7 @@ const CommentBox = ({ id }) => {
             <CommentButton>입력</CommentButton>
           </CommentInputBox>
           {comment?.map((comment) => {
-            return <CommentCards key={comment.id} comment={comment} />;
+            return <CommentCards key={comment.id} comment={comment} post={post} />;
           })}
         </ShowPostingContainer>
       )}

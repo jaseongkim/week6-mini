@@ -42,7 +42,7 @@ const Detail = () => {
             <Header />
           </Stiky>
           <DetailBox post={post} />
-          <CommentBox id={id} />
+          <CommentBox id={id} post={post}/>
         </Layout>
       )}
     </>

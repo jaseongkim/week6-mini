@@ -1,13 +1,26 @@
 import React from "react";
 import styled from "styled-components";
+import { FaPenSquare, FaTrash } from "react-icons/fa";
 
-const CommentCards = ({ id, comment }) => {
+const CommentCards = ({ id, comment, post }) => {
   return (
     <CommentBox>
       <Commentwrap>
         <CommentID>{comment.memberId}</CommentID>
         <CommentBody>{comment.content}</CommentBody>
       </Commentwrap>
+      {post.memberId === comment.memberId ? (
+        <EditCommentContainer>
+          <EditCommentBox>
+            <FaPenSquare />
+          </EditCommentBox>
+          <DeleteCommentBox>
+            <FaTrash />
+          </DeleteCommentBox>
+        </EditCommentContainer>
+      ) : (
+        ""
+      )}
     </CommentBox>
   );
 };
@@ -20,7 +33,6 @@ const CommentBox = styled.div`
   display: flex;
   box-sizing: border-box;
   flex-direction: row;
-  padding-right: 20px;
 `;
 const Commentwrap = styled.div`
   width: 70%;
@@ -32,18 +44,30 @@ const Commentwrap = styled.div`
 `;
 
 const CommentID = styled.div`
-    height: 30px;
-    box-sizing: border-box;
-    width: 120px;
-    background: rgba(0, 0, 0, 0.05);
-    border:none;
-    border-radius: 5px;
-`
+  height: 30px;
+  box-sizing: border-box;
+  width: 20%;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 5px;
+`;
 const CommentBody = styled.div`
-    height: 30px;
-    width: 400px;
-    border:none;
-    box-sizing: border-box;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 5px;
-`
+  height: 30px;
+  width: 100%;
+  border: none;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+`;
+
+const EditCommentContainer = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  justify-content: center;
+  gap: 20px;
+`;
+
+const EditCommentBox = styled.div``;
+const DeleteCommentBox = styled.div``;
