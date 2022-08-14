@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 import instance from "./instance";
 
 export const getCommentsThunk = createAsyncThunk(
   "getComment",
   async (payload, thunkAPI) => {
     try {
-      const { commentResponseDtoList } = await instance.get(`/posts/${payload}`);
-      return thunkAPI.fulfillWithValue(commentResponseDtoList);
+      const { data } = await instance.get(`posts/${payload}`);
+      return thunkAPI.fulfillWithValue(data.data.commentResponseDtoList);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
     }
@@ -18,10 +19,11 @@ export const createCommentThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { data } = await instance.post(
-        `/posts/${payload.postId}/comments`,
-        payload.content
+        `auth/posts/${payload.postId}/comments`,
+        { content: payload.content },
+        { withCredentials: true }
       );
-      return thunkAPI.fulfillWithValue(data);
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
@@ -29,13 +31,13 @@ export const createCommentThunk = createAsyncThunk(
 );
 
 export const deletCommentThunk = createAsyncThunk(
-  "createComment",
+  "deletComment",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await instance.delete(
-        `/posts/${payload.postId}/comments/${payload.Id}`
+      await instance.delete(
+        `auth/posts/${payload.postId}/comments/${payload.id}`
       );
-      return thunkAPI.fulfillWithValue(data);
+      return thunkAPI.fulfillWithValue(payload);
     } catch (e) {
       return thunkAPI.rejectWithValue(e);
     }
@@ -48,7 +50,7 @@ const initialState = {
 };
 
 export const commentsSlice = createSlice({
-  name: "comment",
+  name: "comments",
   initialState,
   reducers: {},
   extraReducers: {
@@ -63,22 +65,23 @@ export const commentsSlice = createSlice({
       // console.log(action);
       // console.log(state);
     },
+    [createCommentThunk.pending]: (state) => {
+      // console.log(state);
+    },
     [createCommentThunk.fulfilled]: (state, action) => {
       state.comments = [...state.comments, action.payload];
     },
     [createCommentThunk.rejected]: (state, action) => {
       state.error = action.payload;
     },
-    [createCommentThunk.pending]: () => {},
     [deletCommentThunk.fulfilled]: (state, action) => {
-        const target = state.comments.findIndex(
-          (comments) => comments.id === action.payload
-        );
-  
-        state.comments.splice(target, 1);
-      },
-      [deletCommentThunk.rejected]: () => {},
-      [deletCommentThunk.pending]: () => {},
+      const new_commentlist = state.comments.filter(
+        (v) => v.id !== action.payload.id
+      );
+      state.comments = new_commentlist;
+    },
+    [deletCommentThunk.rejected]: () => {},
+    [deletCommentThunk.pending]: () => {},
   },
 });
 

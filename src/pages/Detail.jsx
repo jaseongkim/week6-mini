@@ -19,7 +19,7 @@ const Detail = () => {
   const post = useSelector((state) => state.post.post.data);
   const member_Id = localStorage.getItem("memberId");
 
-  console.log(post)
+  console.log(post);
 
   const notLogin = () => {
     window.location.replace("/login");
@@ -30,22 +30,13 @@ const Detail = () => {
   }
 
   return (
-    <>
-      {!member_Id ? (
-        <>
-          <div>로그인이 필요합니다.</div>
-          <button onClick={notLogin}>로그인으로 가기</button>
-        </>
-      ) : (
-        <Layout>
-          <Stiky>
-            <Header />
-          </Stiky>
-          <DetailBox post={post} />
-          <CommentBox id={id} post={post}/>
-        </Layout>
-      )}
-    </>
+    <Layout>
+      <Stiky>
+        <Header />
+      </Stiky>
+      <DetailBox post={post} />
+      <CommentBox id={id} post={post} />
+    </Layout>
   );
 };
 

@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { getPostThunk } from "../redux/modules/postSlice";
-import CommentCards from "./CommentCards";
+import {
+  createCommentThunk,
+  getCommentsThunk,
+  deletCommentThunk,
+} from "../redux/modules/commentsSlice";
+import { FaPenSquare, FaTrash } from "react-icons/fa";
 
 const CommentBox = ({ id, post }) => {
   const dispatch = useDispatch();
   const [commentShow, setCommentShow] = useState(false);
+
   const show = () => {
     commentShow ? setCommentShow(false) : setCommentShow(true);
   };
 
   useEffect(() => {
-    dispatch(getPostThunk(id));
+    dispatch(getCommentsThunk(id));
   }, [dispatch, id]);
 
-  const comment = useSelector(
-    (state) => state.post.post.data.commentResponseDtoList
-  );
+  const { comments } = useSelector((state) => state.comments);
+
+  console.log(comments);
 
   const member_Id = localStorage.getItem("memberId");
 
@@ -42,13 +47,12 @@ const CommentBox = ({ id, post }) => {
       e.preventDefault();
       alert("내용을 입력해주세요");
     } else {
-      e.preventDefault();
-      dispatch(getPostThunk(newComment));
+      dispatch(createCommentThunk(newComment));
       setNewComment(initialState);
     }
   };
 
-  if (comment === undefined) {
+  if (comments === undefined) {
     return (
       <>
         {!commentShow ? (
@@ -105,9 +109,35 @@ const CommentBox = ({ id, post }) => {
               <CommentButton onClick={onSubmitHandler}>입력</CommentButton>
             </CommentInputBox>
           )}
-          {comment?.map((comment) => {
+          {comments.map((comment) => {
             return (
-              <CommentCards key={comment.id} comment={comment} post={post} />
+              <CommentB key={comment.id}>
+                <Commentwrap>
+                  {post.memberId === comment.memberId ? (
+                    <OnerPostId>판매자</OnerPostId>
+                  ) : (
+                    <CommentID>{comment.memberId}</CommentID>
+                  )}
+                  <CommentBody>{comment.content}</CommentBody>
+                </Commentwrap>
+                {member_Id === comment.memberId ? (
+                  <EditCommentContainer>
+                    <EditCommentBox>
+                      <FaPenSquare />
+                    </EditCommentBox>
+                    <DeleteCommentBox
+                      onClick={() => {
+                        console.log(comment);
+                        dispatch(deletCommentThunk(comment));
+                      }}
+                    >
+                      <FaTrash />
+                    </DeleteCommentBox>
+                  </EditCommentContainer>
+                ) : (
+                  ""
+                )}
+              </CommentB>
             );
           })}
         </ShowPostingContainer>
@@ -129,6 +159,7 @@ const PostingContainer = styled.div`
   height: 35px;
   padding-left: 20px;
   padding-top: 6px;
+  padding-bottom: 10px;
 `;
 
 const CommentDown = styled.div`
@@ -144,10 +175,11 @@ const ShowPostingContainer = styled.div`
   border-radius: 5px;
   margin: 10px auto;
   width: 700px;
-  height: 400px;
+  min-height: 400px;
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 6px;
+  padding-bottom: 15px;
   gap: 15px;
 `;
 
@@ -180,5 +212,102 @@ const CommentButton = styled.button`
 
   &:hover {
     opacity: 1;
+  }
+`;
+
+const CommentB = styled.div`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: row;
+  padding-bottom: 20px;
+`;
+
+const Commentwrap = styled.div`
+  width: 80%;
+  box-sizing: border-box;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+`;
+const OnerKeyFrame = keyframes`
+  0% {
+      background: #E782FF;
+      color: white;
+  }
+
+  50%{
+    background: #82ff93;
+      color: white;
+   
+  }
+
+  100% {  
+    background: #ffd782;
+      color: white;
+  }
+`;
+const OnerPostId = styled.div`
+  height: 30px;
+  box-sizing: border-box;
+  width: 40%;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  animation-name: ${OnerKeyFrame};
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+  text-align: center;
+  padding-top: 3px;
+`;
+
+const CommentID = styled.div`
+  height: 30px;
+  box-sizing: border-box;
+  width: 40%;
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  padding-top: 3px;
+`;
+const CommentBody = styled.div`
+  min-height: 30px;
+  width: 100%;
+  border: none;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-top: 3px;
+`;
+
+const EditCommentContainer = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 20%;
+  justify-content: center;
+  gap: 30px;
+  padding-left: 40px;
+  margin: auto;
+`;
+
+const EditCommentBox = styled.div`
+  cursor: pointer;
+  color: #0064ff;
+  &:hover {
+    scale: 1.1;
+  }
+`;
+const DeleteCommentBox = styled.div`
+  cursor: pointer;
+  color: #0064ff;
+  &:hover {
+    scale: 1.1;
   }
 `;
