@@ -7,12 +7,13 @@ import { PostList } from "../components/PostList";
 
 const Main = () => {
   const [category, setCartegory] = useState(0);
+  const [pageNavi] = useState(0);
 
   return (
     <Layout>
       <Stiky>
         <Header />
-        <Navi setCartegory={setCartegory} />
+        <Navi setCartegory={setCartegory} pageNavi={pageNavi} />
       </Stiky>
       <PostList category={category} />
     </Layout>
