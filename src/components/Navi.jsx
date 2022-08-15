@@ -63,6 +63,7 @@ const NaviForm = styled.div`
 
 const NaviGroup = styled.div`
   margin-left: ${(props) => props.margin};
+  margin-bottom: 5px;
   position: relative;
   overflow: hidden;
   flex: 0 0 auto;
@@ -75,5 +76,9 @@ const NaviGroup = styled.div`
   padding-right: 16px;
   border-radius: 20px;
   cursor: pointer;
-  background-color: rgb(26, 26, 26);
+  background-color: #0064ff;
+  opacity: 0.8;
+  &:hover{
+    opacity:1;
+  }
 `;
