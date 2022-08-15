@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import instance from "./instance";
 
-export const __getPostThunk = createAsyncThunk(
-  "GET_TODO",
-  async (arg, thunkAPI) => {
+export const getPostThunk = createAsyncThunk(
+  "getPost",
+  async (payload, thunkAPI) => {
     try {
-      const { data } = await axios.get();
+      const { data } = await instance.get(`posts/${payload}`);
       return thunkAPI.fulfillWithValue(data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
@@ -16,9 +16,13 @@ export const __getPostThunk = createAsyncThunk(
 const initialState = {
   post: {
     id: 0,
-    body: "",
-    username: "",
     title: "",
+    content: "",
+    imgUrl: "",
+    price: "",
+    dibCount: 0,
+    view: 0,
+    commentsCount: 0,
   },
   error: null,
 };
@@ -30,13 +34,25 @@ export const postSlice = createSlice({
     clearTodo: (state) => {
       state.post = {
         id: 0,
-        body: "",
-        username: "",
         title: "",
+        content: "",
+        imgUrl: "",
+        price: "",
+        dibCount: 0,
+        view: 0,
+        commentsCount: 0,
       };
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [getPostThunk.fulfilled]:(state, action) => {
+      state.post = action.payload;
+    },
+    [getPostThunk.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [getPostThunk.pending]: () => {},
+  },
 });
 
 export const { clearTodo } = postSlice.actions;
