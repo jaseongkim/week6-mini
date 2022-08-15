@@ -6,8 +6,8 @@ export const getCommentsThunk = createAsyncThunk(
   "getComment",
   async (payload, thunkAPI) => {
     try {
-      const { data } = await instance.get(`posts/${payload}`);
-      return thunkAPI.fulfillWithValue(data.data.commentResponseDtoList);
+      const { data } = await instance.get(`posts/${payload}/comments`);
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
     }
