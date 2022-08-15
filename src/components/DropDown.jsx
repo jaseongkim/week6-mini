@@ -3,14 +3,14 @@ import styled from "styled-components";
 
 import { useState } from "react";
 
-const DropDown = () => {
+const DropDown = ({onUpLoadHandler,upLoad}) => {
   return (
-    <PostingDropDown>
-      <option>Choose One</option>
-      <option value="1">cloths</option>
-      <option value="2">electronics</option>
-      <option value="3">books</option>
-      <option value="4">sports</option>
+    <PostingDropDown name="category" value={upLoad.category} onChange={onUpLoadHandler} >
+      <option value="">Choose One</option>
+      <option value="clothes">의류</option>
+      <option value="electronics">전자기기</option>
+      <option value="books">도서</option>
+      <option value="sports">스포츠용품</option>
     </PostingDropDown>
   );
 };

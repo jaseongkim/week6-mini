@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import DropDown from "../components/DropDown";
 import { useDispatch } from "react-redux";
-import Header from "../components/Header";
-import Layout from "../components/Layout";
-import { postPostThunk } from "../redux/modules/postsSlice";
+import { editPostThunk } from "../redux/modules/postsSlice";
+import { onEditPostHandler } from "../redux/modules/postSlice";
 import imageButton from "../images/imageButton.png";
 new Blob([JSON.stringify()], { type: "application/json" });
 
-const Posting = () => {
+const DetailEdit = ({ id }) => {
   const dispatch = useDispatch();
 
   const [fileImage, setFileImage] = useState("");
@@ -31,7 +30,7 @@ const Posting = () => {
     setFileImage(URL.createObjectURL(e.target.files[0]));
   };
 
-  const onPostingHandler = (e) => {
+  const onEditPostingHandler = (e) => {
     if (
       upLoad.title === "" ||
       upLoad.content === "" ||
@@ -44,89 +43,93 @@ const Posting = () => {
     e.preventDefault();
     let frm = new FormData();
     let postimage = document.getElementById("ex_file");
-
     frm.append(
       "data",
       new Blob([JSON.stringify(upLoad)], { type: "application/json" })
     );
     frm.append("image", postimage.files[0]);
 
-    dispatch(postPostThunk(frm));
+    dispatch(editPostThunk({id,frm}));
   };
 
-
   return (
-    <Layout>
-      <Stiky>
-        <Header />
-      </Stiky>
-      <PostingBox enctype="multipart/form-data" onSubmit={onPostingHandler}>
+    <div>
+      <PostingBox enctype="multipart/form-data">
         <PostingContainer>
-          <PostingLeft>
-            {fileImage === "" ? (
-              <PostingImgBox></PostingImgBox>
-            ) : (
-              <AddPostingImg src={fileImage}></AddPostingImg>
-            )}
-                <AppStyle>
-      <label htmlFor="ex_file">
-        <div className="btnStart">
-          <img src={imageButton} alt="btnStart" />
-        </div>
-      </label>
-      <input
-        type="file"
-        id="ex_file"
-        accept="image/jpg, image/png, image/jpeg"
-        onChange={saveFileImage}
-      />
-    </AppStyle>
-          </PostingLeft>
-          <PostingRight>
-            <PostingText>제목</PostingText>
-            <PostingInputBox
-              type="text"
-              name="title"
-              value={upLoad.title}
-              onChange={onUpLoadHandler}
-            />
-            <PostingText>가격</PostingText>
-            <PostingInputBox
-              type="number"
-              name="price"
-              value={upLoad.price}
-              onChange={onUpLoadHandler}
-            />
-            <PostingText>내용</PostingText>
-            <PostingInputBoxContents
-              type="text"
-              name="content"
-              value={upLoad.content}
-              onChange={onUpLoadHandler}
-            />
-            <PostingText>카테고리</PostingText>
-            <DropDown onUpLoadHandler={onUpLoadHandler} upLoad={upLoad} />
-          </PostingRight>
+          <PostingMiniContainer>
+            <PostingLeft>
+              {fileImage === "" ? (
+                <PostingImgBox></PostingImgBox>
+              ) : (
+                <AddPostingImg src={fileImage}></AddPostingImg>
+              )}
+              <AppStyle>
+                <label htmlFor="ex_file">
+                  <div className="btnStart">
+                    <img src={imageButton} alt="btnStart" />
+                  </div>
+                </label>
+                <input
+                  type="file"
+                  id="ex_file"
+                  accept="image/jpg, image/png, image/jpeg"
+                  onChange={saveFileImage}
+                />
+              </AppStyle>
+            </PostingLeft>
+            <PostingRight>
+              <PostingText>제목</PostingText>
+              <PostingInputBox
+                type="text"
+                name="title"
+                value={upLoad.title}
+                onChange={onUpLoadHandler}
+              />
+              <PostingText>가격</PostingText>
+              <PostingInputBox
+                type="number"
+                name="price"
+                value={upLoad.price}
+                onChange={onUpLoadHandler}
+              />
+              <PostingText>내용</PostingText>
+              <PostingInputBoxContents
+                type="text"
+                name="content"
+                value={upLoad.content}
+                onChange={onUpLoadHandler}
+              />
+              <PostingText>카테고리</PostingText>
+              <DropDown onUpLoadHandler={onUpLoadHandler} upLoad={upLoad} />
+            </PostingRight>
+          </PostingMiniContainer>
         </PostingContainer>
-        <PostingButton>등록하기</PostingButton>
+        <DipContanier>
+          <OnerPost>
+            <EditPostButton onClick={onEditPostingHandler}>
+              수정 완료
+            </EditPostButton>
+            <DeletePostbutton onClick={() => dispatch(onEditPostHandler())}>
+              취소하기
+            </DeletePostbutton>
+          </OnerPost>
+        </DipContanier>
       </PostingBox>
-    </Layout>
+    </div>
   );
 };
 
-export default Posting;
-
-const Stiky = styled.section`
-  position: sticky;
-  top: 0;
-  z-index: 1;
-`;
+export default DetailEdit;
 
 const PostingBox = styled.form`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const PostingMiniContainer = styled.div`
+  display: flex;
 `;
 
 const PostingContainer = styled.div`
@@ -160,7 +163,6 @@ const AddPostingImg = styled.img`
   border: none;
   border-radius: 5px;
 `;
-
 
 const PostingRight = styled.div`
   position: relative;
@@ -219,8 +221,8 @@ const AppStyle = styled.div`
     max-height: 40px;
     border-radius: 10px;
     opacity: 0.8;
-    &:hover{
-        opacity: 1;
+    &:hover {
+      opacity: 1;
     }
   }
   label {
@@ -239,5 +241,53 @@ const AppStyle = styled.div`
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+  }
+`;
+const DipContanier = styled.div`
+  margin: 0 auto 10px auto;
+`;
+
+const OnerPost = styled.div`
+  width: 200px;
+  height: 50px;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15px;
+`;
+
+const EditPostButton = styled.div`
+  width: 100px;
+  height: 50px;
+  border: none;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: #0064ff;
+  color: white;
+  cursor: pointer;
+  opacity: 0.8;
+  text-align: center;
+  padding-top: 13px;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const DeletePostbutton = styled.div`
+  width: 100px;
+  height: 50px;
+  border: none;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: #f81717;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 13px;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
   }
 `;

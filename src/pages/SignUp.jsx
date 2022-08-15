@@ -4,7 +4,6 @@ import { debounce } from "lodash";
 import SignUpForm from "../components/SignUpForm";
 
 const SignUp = () => {
-  console.log(window.innerWidth);
 
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
