@@ -13,6 +13,7 @@ export const PostList = ({ category }) => {
 
   useEffect(() => {
     dispatch(__getPostThunk());
+    console.log("postList useEffect");
   }, [dispatch]);
 
   return (
@@ -20,25 +21,7 @@ export const PostList = ({ category }) => {
       {
         [
           <ListContainer>
-            <ListTitle>의류</ListTitle>
-            <ListWrapper>
-              {posts?.map((product) => {
-                return <PostCards key={product.id} product={product} />;
-              })}
-            </ListWrapper>
-            <ListTitle>스포츠용품</ListTitle>
-            <ListWrapper>
-              {posts?.map((product) => {
-                return <PostCards key={product.id} product={product} />;
-              })}
-            </ListWrapper>
-            <ListTitle>도서</ListTitle>
-            <ListWrapper>
-              {posts?.map((product) => {
-                return <PostCards key={product.id} product={product} />;
-              })}
-            </ListWrapper>
-            <ListTitle>전자기기</ListTitle>
+            <ListTitle>전체</ListTitle>
             <ListWrapper>
               {posts?.map((product) => {
                 return <PostCards key={product.id} product={product} />;
@@ -49,7 +32,11 @@ export const PostList = ({ category }) => {
             <ListTitle>의류</ListTitle>
             <ListWrapper>
               {posts?.map((product) => {
-                return <PostCards key={product.id} product={product} />;
+                if (product.category === "clothes") {
+                  return <PostCards key={product.id} product={product} />;
+                } else {
+                  return null;
+                }
               })}
             </ListWrapper>
           </ListContainer>,
@@ -57,7 +44,11 @@ export const PostList = ({ category }) => {
             <ListTitle>스포츠용품</ListTitle>
             <ListWrapper>
               {posts?.map((product) => {
-                return <PostCards key={product.id} product={product} />;
+                if (product.category === "sports") {
+                  return <PostCards key={product.id} product={product} />;
+                } else {
+                  return null;
+                }
               })}
             </ListWrapper>
           </ListContainer>,
@@ -65,7 +56,11 @@ export const PostList = ({ category }) => {
             <ListTitle>도서</ListTitle>
             <ListWrapper>
               {posts?.map((product) => {
-                return <PostCards key={product.id} product={product} />;
+                if (product.category === "books") {
+                  return <PostCards key={product.id} product={product} />;
+                } else {
+                  return null;
+                }
               })}
             </ListWrapper>
           </ListContainer>,
@@ -73,7 +68,11 @@ export const PostList = ({ category }) => {
             <ListTitle>전자기기</ListTitle>
             <ListWrapper>
               {posts?.map((product) => {
-                return <PostCards key={product.id} product={product} />;
+                if (product.category === "electronics") {
+                  return <PostCards key={product.id} product={product} />;
+                } else {
+                  return null;
+                }
               })}
             </ListWrapper>
           </ListContainer>,

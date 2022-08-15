@@ -1,27 +1,39 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const Navi = ({ setCartegory }) => {
+const Navi = ({ setCartegory, pageNavi }) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <NaviContainer>
         <StContainer>
           <Container>
-            <NaviForm>
-              <NaviGroup onClick={() => setCartegory(0)}>전체</NaviGroup>
-              <NaviGroup margin="8px" onClick={() => setCartegory(1)}>
-                의류
-              </NaviGroup>
-              <NaviGroup margin="8px" onClick={() => setCartegory(2)}>
-                스포츠용품
-              </NaviGroup>
-              <NaviGroup margin="8px" onClick={() => setCartegory(3)}>
-                도서
-              </NaviGroup>
-              <NaviGroup margin="8px" onClick={() => setCartegory(4)}>
-                전자기기
-              </NaviGroup>
-            </NaviForm>
+            {
+              [
+                <NaviForm>
+                  <NaviGroup onClick={() => setCartegory(0)}>전체</NaviGroup>
+                  <NaviGroup margin="8px" onClick={() => setCartegory(1)}>
+                    의류
+                  </NaviGroup>
+                  <NaviGroup margin="8px" onClick={() => setCartegory(2)}>
+                    스포츠용품
+                  </NaviGroup>
+                  <NaviGroup margin="8px" onClick={() => setCartegory(3)}>
+                    도서
+                  </NaviGroup>
+                  <NaviGroup margin="8px" onClick={() => setCartegory(4)}>
+                    전자기기
+                  </NaviGroup>
+                </NaviForm>,
+                <NaviForm>
+                  <NaviGroup onClick={() => navigate("/posting")}>
+                    판매글 등록
+                  </NaviGroup>
+                </NaviForm>,
+              ][pageNavi]
+            }
           </Container>
         </StContainer>
       </NaviContainer>
@@ -78,7 +90,7 @@ const NaviGroup = styled.div`
   cursor: pointer;
   background-color: #0064ff;
   opacity: 0.8;
-  &:hover{
-    opacity:1;
+  &:hover {
+    opacity: 1;
   }
 `;
