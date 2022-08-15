@@ -3,7 +3,8 @@ import post from "./modules/postSlice";
 import posts from "./modules/postsSlice";
 import members from "./modules/membersSlice";
 import comments from "./modules/commentsSlice";
-import dibs from "./modules/dibSlice";
+import dibs from "./modules/dibsSlice";
+
 
 export default configureStore({
   reducer: {

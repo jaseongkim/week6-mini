@@ -6,7 +6,6 @@ export const __getPostThunk = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await instance.get("posts");
-      console.log(data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
@@ -68,7 +67,6 @@ export const postsSlice = createSlice({
   extraReducers: {
     [__getPostThunk.fulfilled]: (state, action) => {
       state.posts = action.payload;
-      console.log(state.posts);
     },
     [__getPostThunk.rejected]: (state, action) => {
       state.error = action.payload;
