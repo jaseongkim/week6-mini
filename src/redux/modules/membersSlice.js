@@ -20,8 +20,6 @@ export const createMemberDB = (data) => {
             window.location.replace("/")
           );
         }
-        console.log(response);
-        // window.location.replace("/");
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -44,7 +42,6 @@ export const loginMemberDB = (data) => {
           return window.alert(response.data.error.message);
         } else {
           return (
-            // console.log(response),
             localStorage.setItem("token", response.headers.authorization),
             localStorage.setItem("memberId", response.data.data.memberId),
             alert(`${localStorage.memberId}님 환영합니다.`),
