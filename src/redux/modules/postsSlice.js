@@ -14,6 +14,36 @@ export const __getPostThunk = createAsyncThunk(
   }
 );
 
+export const postPostThunk = createAsyncThunk(
+  "POST_POST",
+  async (payload, thunkAPI) => {
+    try {
+      const { data } = await instance.post("auth/posts", payload, {
+        "Content-Type": "multipart/form-data",
+        withCredentials: true,
+      });
+      return window.location.replace('/');
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+);
+
+export const delPostThunk = createAsyncThunk(
+  "DEL_POST",
+  async (payload, api) => {
+    try {
+      await instance.delete(`auth/posts/${payload}`);
+      return window.location.replace('/')
+    } catch (e) {
+      return api.rejectWithValue(e);
+    }
+  }
+);
+
+
+
+
 const initialState = {
   posts: [],
   error: null,
@@ -32,6 +62,13 @@ export const postsSlice = createSlice({
       state.error = action.payload;
     },
     [__getPostThunk.pending]: () => {},
+    [postPostThunk.fulfilled]: (state, action) => {
+      state.posts = [...state.posts, action.payload];
+    },
+    [postPostThunk.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [postPostThunk.pending]: () => {},
   },
 });
 

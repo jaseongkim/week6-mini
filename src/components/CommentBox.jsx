@@ -10,7 +10,7 @@ import {
 } from "../redux/modules/commentsSlice";
 import { FaPenSquare, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 
-const CommentBox = ({ id, post }) => {
+const CommentBox = ({ id, post, member_Id }) => {
   const dispatch = useDispatch();
   const [commentShow, setCommentShow] = useState(false);
 
@@ -23,10 +23,6 @@ const CommentBox = ({ id, post }) => {
   }, [dispatch, id]);
 
   const { comments } = useSelector((state) => state.comments);
-
-  console.log(comments);
-
-  const member_Id = localStorage.getItem("memberId");
 
   const noLogin = () => {
     alert("로그인해주세요!");

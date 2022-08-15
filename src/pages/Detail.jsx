@@ -17,13 +17,8 @@ const Detail = () => {
   }, [dispatch, id]);
 
   const post = useSelector((state) => state.post.post.data);
+  console.log(post)
   const member_Id = localStorage.getItem("memberId");
-
-  console.log(post);
-
-  const notLogin = () => {
-    window.location.replace("/login");
-  };
 
   if (post === undefined) {
     return;
@@ -34,8 +29,8 @@ const Detail = () => {
       <Stiky>
         <Header />
       </Stiky>
-      <DetailBox post={post} />
-      <CommentBox id={id} post={post} />
+      <DetailBox id={id} post={post} member_Id={member_Id} />
+      <CommentBox id={id} post={post} member_Id={member_Id} />
     </Layout>
   );
 };

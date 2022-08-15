@@ -1,84 +1,128 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import DropDown from "../components/DropDown";
-import Modal from "react-bootstrap/Modal";
-import UploadImg from "../components/UploadImg";
-import "./Posting.css";
+import { useDispatch } from "react-redux";
+import Header from "../components/Header";
+import Layout from "../components/Layout";
+import { postPostThunk } from "../redux/modules/postsSlice";
+import imageButton from "../images/imageButton.png";
+new Blob([JSON.stringify()], { type: "application/json" });
 
 const Posting = () => {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const dispatch = useDispatch();
 
   const [fileImage, setFileImage] = useState("");
 
-  // const [newPosting, setNewPosting] = useState({
-  //   title,
-  //   content,
-  //   price,
-  //   category,
-  //   img,
-  // })
+  const initialState = {
+    title: "",
+    content: "",
+    price: "",
+    category: "",
+  };
+  const [upLoad, setUpLoad] = useState(initialState);
 
-  console.log(fileImage);
+  const onUpLoadHandler = (e) => {
+    const { name, value } = e.target;
+    setUpLoad({ ...upLoad, [name]: value });
+  };
 
   // 파일 저장
   const saveFileImage = (e) => {
     setFileImage(URL.createObjectURL(e.target.files[0]));
   };
 
-  // 파일 삭제
-  const deleteFileImage = () => {
-    URL.revokeObjectURL(fileImage);
+  const onPostingHandler = (e) => {
+    if (
+      upLoad.title === "" ||
+      upLoad.content === "" ||
+      upLoad.price === "" ||
+      upLoad.category === ""
+    ) {
+      alert("빈칸을 다 채워주세요.");
+      return;
+    }
+    e.preventDefault();
+    let frm = new FormData();
+    let postimage = document.getElementById("ex_file");
+
+    frm.append(
+      "data",
+      new Blob([JSON.stringify(upLoad)], { type: "application/json" })
+    );
+    frm.append("image", postimage.files[0]);
+
+    dispatch(postPostThunk(frm));
   };
 
+
   return (
-    <PostingBox>
-      <PostingContainer>
-        <PostingLeft>
-          {fileImage === "" ? (
-            <PostingImgBox></PostingImgBox>
-          ) : (
-            <AddPostingImg src={fileImage}></AddPostingImg>
-          )}
-
-          <PostingImgButton onClick={handleShow}>
-            이미지 업로드
-          </PostingImgButton>
-
-          {show ? (
-            <Modal show={show} onHide={handleClose}>
-              <UploadImg
-                fileImage={fileImage}
-                saveFileImage={saveFileImage}
-                deleteFileImage={deleteFileImage}
-                handleClose={handleClose}
-              />
-            </Modal>
-          ) : (
-            ""
-          )}
-        </PostingLeft>
-        <PostingRight>
-          <PostingText>제목</PostingText>
-          <PostingInputBox />
-          <PostingText>가격</PostingText>
-          <PostingInputBox />
-          <PostingText>내용</PostingText>
-          <PostingInputBoxContents type="text" />
-          <PostingText>카테고리</PostingText>
-          <DropDown />
-        </PostingRight>
-      </PostingContainer>
-      <PostingButton>등록하기</PostingButton>
-    </PostingBox>
+    <Layout>
+      <Stiky>
+        <Header />
+      </Stiky>
+      <PostingBox enctype="multipart/form-data" onSubmit={onPostingHandler}>
+        <PostingContainer>
+          <PostingLeft>
+            {fileImage === "" ? (
+              <PostingImgBox></PostingImgBox>
+            ) : (
+              <AddPostingImg src={fileImage}></AddPostingImg>
+            )}
+                <AppStyle>
+      <label htmlFor="ex_file">
+        <div className="btnStart">
+          <img src={imageButton} alt="btnStart" />
+        </div>
+      </label>
+      <input
+        type="file"
+        id="ex_file"
+        accept="image/jpg, image/png, image/jpeg"
+        onChange={saveFileImage}
+      />
+    </AppStyle>
+          </PostingLeft>
+          <PostingRight>
+            <PostingText>제목</PostingText>
+            <PostingInputBox
+              type="text"
+              name="title"
+              value={upLoad.title}
+              onChange={onUpLoadHandler}
+            />
+            <PostingText>가격</PostingText>
+            <PostingInputBox
+              type="number"
+              name="price"
+              value={upLoad.price}
+              onChange={onUpLoadHandler}
+            />
+            <PostingText>내용</PostingText>
+            <PostingInputBoxContents
+              type="text"
+              name="content"
+              value={upLoad.content}
+              onChange={onUpLoadHandler}
+            />
+            <PostingText>카테고리</PostingText>
+            <DropDown onUpLoadHandler={onUpLoadHandler} upLoad={upLoad} />
+          </PostingRight>
+        </PostingContainer>
+        <PostingButton>등록하기</PostingButton>
+      </PostingBox>
+    </Layout>
   );
 };
 
 export default Posting;
 
-const PostingBox = styled.div`
+const Stiky = styled.section`
+  position: sticky;
+  top: 0;
+  z-index: 1;
+`;
+
+const PostingBox = styled.form`
   width: 100%;
   height: 100vh;
   display: flex;
@@ -117,7 +161,7 @@ const AddPostingImg = styled.img`
   border-radius: 5px;
 `;
 
-const PostingImgButton = styled.button`
+const PostingImgButton = styled.input`
   width: 310px;
   height: 40px;
   border: none;
@@ -177,5 +221,36 @@ const PostingButton = styled.button`
   opacity: 0.8;
   &:hover {
     opacity: 1;
+  }
+`;
+
+const AppStyle = styled.div`
+  box-sizing: border-box;
+  margin-top: 20px;
+  img {
+    width: 310px;
+    max-height: 40px;
+    border-radius: 10px;
+    opacity: 0.8;
+    &:hover{
+        opacity: 1;
+    }
+  }
+  label {
+    display: inline-block;
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
   }
 `;
