@@ -13,6 +13,18 @@ export const dibsThunk = createAsyncThunk(
   }
 );
 
+export const updibsThunk = createAsyncThunk(
+  "postdib",
+  async (payload, thunkAPI) => {
+    try {
+      const { data } = await instance.post(`auth/dibs/posts/${payload}`);
+      return console.log(data)
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.code);
+    }
+  }
+);
+
 const initialState = {
   dibs: {
     data: "down"

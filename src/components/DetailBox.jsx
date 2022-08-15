@@ -3,14 +3,16 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dibsThunk } from "../redux/modules/dibSlice";
 import { delPostThunk } from "../redux/modules/postsSlice";
+import { onEditPostHandler } from "../redux/modules/postSlice";
+import DetailEdit from "./DetailEdit";
 
 const DetailBox = ({ id, member_Id, post }) => {
   const dispatch = useDispatch();
   const { dibs } = useSelector((state) => state.dibs);
-  console.log(dibs)
+ 
 
-  return (
-    <PostingBox>
+  return (<>
+    {post.isEditMode ? <DetailEdit id={id} />:<PostingBox>
       <PostingContainer>
         <PostingMiniContainer>
           <PostingLeft>
@@ -29,7 +31,7 @@ const DetailBox = ({ id, member_Id, post }) => {
           member_Id === post.memberId ? (
             <DipContanier>
               <OnerPost>
-                <EditPostButton>수정하기</EditPostButton>
+                <EditPostButton onClick={()=>dispatch(onEditPostHandler())}>수정하기</EditPostButton>
                 <DeletePostbutton onClick={() => dispatch(delPostThunk(id))}>삭제하기</DeletePostbutton>
               </OnerPost>
             </DipContanier>
@@ -42,7 +44,8 @@ const DetailBox = ({ id, member_Id, post }) => {
           ""
         )}
       </PostingContainer>
-    </PostingBox>
+    </PostingBox>}</>
+    
   );
 };
 

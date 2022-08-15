@@ -16,7 +16,7 @@ const Detail = () => {
     dispatch(getPostThunk(id));
   }, [dispatch, id]);
 
-  const post = useSelector((state) => state.post.post.data);
+  const post = useSelector((state) => state.post.post);
   console.log(post)
   const member_Id = localStorage.getItem("memberId");
 

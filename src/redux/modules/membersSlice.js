@@ -60,12 +60,7 @@ const memberSlice = createSlice({
   initialState: {
     member_list: [],
   },
-  reducers: {
-    loadMember: (state, action) => {
-      state.member_list.push(action.payload);
-    },
-  },
+  reducers: {},
 });
 
-export const { loadMember } = memberSlice.actions;
 export default memberSlice.reducer;

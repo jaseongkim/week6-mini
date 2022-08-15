@@ -10,7 +10,7 @@ import {
 } from "../redux/modules/commentsSlice";
 import { FaPenSquare, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 
-const CommentBox = ({ id, post, member_Id }) => {
+const CommentBox = ({ id, post}) => {
   const dispatch = useDispatch();
   const [commentShow, setCommentShow] = useState(false);
 
@@ -32,6 +32,8 @@ const CommentBox = ({ id, post, member_Id }) => {
     postId: "",
     content: "",
   };
+
+  const member_Id = localStorage.getItem("memberId");
 
   const [newComment, setNewComment] = useState(initialState);
   const [editComment, setEditComment] = useState(initialState);

@@ -22,9 +22,24 @@ export const postPostThunk = createAsyncThunk(
         "Content-Type": "multipart/form-data",
         withCredentials: true,
       });
-      return window.location.replace('/');
+      return window.location.replace("/");
     } catch (e) {
       return console.log(e);
+    }
+  }
+);
+
+export const editPostThunk = createAsyncThunk(
+  "EDIT_POST",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await instance.put(`auth/posts/${payload.id}`, payload.frm, {
+        "Content-Type": "multipart/form-data",
+        withCredentials: true,
+      });
+      return window.location.replace(`/detail/${payload.id}`);
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e);
     }
   }
 );
@@ -34,15 +49,12 @@ export const delPostThunk = createAsyncThunk(
   async (payload, api) => {
     try {
       await instance.delete(`auth/posts/${payload}`);
-      return window.location.replace('/')
+      return window.location.replace("/");
     } catch (e) {
       return api.rejectWithValue(e);
     }
   }
 );
-
-
-
 
 const initialState = {
   posts: [],
