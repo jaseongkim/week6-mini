@@ -3,49 +3,93 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dibsThunk } from "../redux/modules/dibSlice";
 import { delPostThunk } from "../redux/modules/postsSlice";
-import { onEditPostHandler } from "../redux/modules/postSlice";
+import {
+  onDonePostHandler,
+  onEditPostHandler,
+} from "../redux/modules/postSlice";
 import DetailEdit from "./DetailEdit";
 
 const DetailBox = ({ id, member_Id, post }) => {
   const dispatch = useDispatch();
   const { dibs } = useSelector((state) => state.dibs);
- 
 
-  return (<>
-    {post.isEditMode ? <DetailEdit id={id} />:<PostingBox>
-      <PostingContainer>
-        <PostingMiniContainer>
-          <PostingLeft>
-            <AddPostingImg src={post.imgUrl}></AddPostingImg>
-          </PostingLeft>
-          <PostingRight>
-            <PostingText>제목</PostingText>
-            <TextBox>{post.title}</TextBox>
-            <PostingText>가격</PostingText>
-            <TextBox>{post.price}</TextBox>
-            <PostingText>내용</PostingText>
-            <TextArea>{post.content}</TextArea>
-          </PostingRight>
-        </PostingMiniContainer>
-        {member_Id ? (
-          member_Id === post.memberId ? (
-            <DipContanier>
-              <OnerPost>
-                <EditPostButton onClick={()=>dispatch(onEditPostHandler())}>수정하기</EditPostButton>
-                <DeletePostbutton onClick={() => dispatch(delPostThunk(id))}>삭제하기</DeletePostbutton>
-              </OnerPost>
-            </DipContanier>
-          ) : (
-            <DipContanier>
-              <DipButton onclick={() => dispatch(dibsThunk(id))}>찜하기!</DipButton>
-            </DipContanier>
-          )
-        ) : (
-          ""
-        )}
-      </PostingContainer>
-    </PostingBox>}</>
-    
+  console.log(post.isDone);
+
+  return (
+    <>
+      {post.isEditMode ? (
+        <DetailEdit id={id} />
+      ) : (
+        <PostingBox>
+          <PostingContainer>
+            <PostingMiniContainer>
+              <PostingLeft>
+                <AddPostingImg src={post.imgUrl}></AddPostingImg>
+              </PostingLeft>
+              <PostingRight>
+                <PostingText>제목</PostingText>
+                <TextBox>{post.title}</TextBox>
+                <PostingText>가격</PostingText>
+                <TextBox>{post.price}</TextBox>
+                <PostingText>내용</PostingText>
+                <TextArea>{post.content}</TextArea>
+              </PostingRight>
+            </PostingMiniContainer>
+            {member_Id ? (
+              member_Id === post.memberId ? (
+                !post.isDone ? (
+                  <DipContanier>
+                    <OnerPost>
+                      <EditPostButton
+                        onClick={() => dispatch(onEditPostHandler())}
+                      >
+                        수정하기
+                      </EditPostButton>
+                      <DeletePostbutton
+                        onClick={() => dispatch(delPostThunk(id))}
+                      >
+                        삭제하기
+                      </DeletePostbutton>
+                      <IsDonePostbutton
+                        onClick={() => dispatch(onDonePostHandler())}
+                      >
+                        판매완료
+                      </IsDonePostbutton>
+                    </OnerPost>
+                  </DipContanier>
+                ) : (
+                  <DipContanier>
+                    <OnerPost>
+                      <IsDonePostbutton>판매완료</IsDonePostbutton>
+                    </OnerPost>
+                  </DipContanier>
+                )
+              ) : post.isDone ? (
+                <DipContanier>
+                  <OnerPost>
+                    <IsDonePostbutton>판매완료</IsDonePostbutton>
+                  </OnerPost>
+                </DipContanier>
+              ) : (
+                <DipContanier>
+                  <DipButton onclick={() => dispatch(dibsThunk(id))}>
+                    찜하기!
+                  </DipButton>
+                </DipContanier>
+              )
+            ) : post.isDone ? (
+              <DipContanier>
+                <OnerPost>
+                  <IsDonePostbutton>판매완료</IsDonePostbutton>
+                </OnerPost>
+              </DipContanier>
+            ) : (
+              ""
+            )}
+          </PostingContainer>
+        </PostingBox>
+      )}
+    </>
   );
 };
 
@@ -124,7 +168,7 @@ const DipContanier = styled.div`
 `;
 
 const OnerPost = styled.div`
-  width: 200px;
+  width: 300px;
   height: 50px;
   border: none;
   box-sizing: border-box;
@@ -158,6 +202,22 @@ const DeletePostbutton = styled.div`
   border-radius: 15px;
   box-sizing: border-box;
   background: #f81717;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 13px;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+  }
+`;
+const IsDonePostbutton = styled.div`
+  width: 100px;
+  height: 50px;
+  border: none;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: #e0bb17;
   color: white;
   cursor: pointer;
   text-align: center;
