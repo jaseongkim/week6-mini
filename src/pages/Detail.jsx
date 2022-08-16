@@ -13,6 +13,7 @@ const Detail = () => {
   const dispatch = useDispatch();
 
   const post = useSelector((state) => state.post.post);
+  console.log(post);
 
   useEffect(() => {
     dispatch(getPostThunk(id));

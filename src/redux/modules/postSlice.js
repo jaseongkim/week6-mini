@@ -5,7 +5,7 @@ export const getPostThunk = createAsyncThunk(
   "getPost",
   async (payload, thunkAPI) => {
     try {
-      const  {data} = await instance.get(`posts/${payload}`);
+      const { data } = await instance.get(`posts/${payload}`);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
@@ -43,6 +43,7 @@ const initialState = {
     view: 0,
     commentsCount: 0,
     isEditMode: false,
+    isDone: false,
   },
   error: null,
 };
@@ -51,14 +52,16 @@ export const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    onEditPostHandler : (state, action) => {
-      state.post.isEditMode = !state.post.isEditMode
-    }
-
+    onEditPostHandler: (state, action) => {
+      state.post.isEditMode = !state.post.isEditMode;
+    },
+    onDonePostHandler: (state, action) => {
+      state.post.isDone = true;
+    },
   },
   extraReducers: {
-    [getPostThunk.fulfilled]:(state, action) => {
-      state.post = action.payload
+    [getPostThunk.fulfilled]: (state, action) => {
+      state.post = action.payload;
     },
     [getPostThunk.rejected]: (state, action) => {
       state.error = action.payload;
@@ -74,5 +77,5 @@ export const postSlice = createSlice({
   },
 });
 
-export const { onEditPostHandler } = postSlice.actions;
+export const { onEditPostHandler, onDonePostHandler } = postSlice.actions;
 export default postSlice.reducer;
