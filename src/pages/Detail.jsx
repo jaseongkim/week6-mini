@@ -17,7 +17,6 @@ const Detail = () => {
 
   useEffect(() => {
     dispatch(getPostThunk(id));
-
   }, [dispatch, id]);
   const member_Id = localStorage.getItem("memberId");
 
