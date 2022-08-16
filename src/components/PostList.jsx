@@ -9,11 +9,9 @@ export const PostList = ({ category }) => {
 
   const { posts } = useSelector((state) => state.posts);
 
-  console.log(posts);
 
   useEffect(() => {
     dispatch(__getPostThunk());
-    console.log("postList useEffect");
   }, [dispatch]);
 
   return (

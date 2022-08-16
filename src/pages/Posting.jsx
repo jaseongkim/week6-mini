@@ -6,10 +6,12 @@ import Header from "../components/Header";
 import Layout from "../components/Layout";
 import { postPostThunk } from "../redux/modules/postsSlice";
 import imageButton from "../images/imageButton.png";
+import { useNavigate } from "react-router-dom";
 new Blob([JSON.stringify()], { type: "application/json" });
 
 const Posting = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [fileImage, setFileImage] = useState("");
 
@@ -31,7 +33,7 @@ const Posting = () => {
     setFileImage(URL.createObjectURL(e.target.files[0]));
   };
 
-  const onPostingHandler = (e) => {
+  const onPostingHandler = async (e) => {
     if (
       upLoad.title === "" ||
       upLoad.content === "" ||
@@ -50,8 +52,15 @@ const Posting = () => {
       new Blob([JSON.stringify(upLoad)], { type: "application/json" })
     );
     frm.append("image", postimage.files[0]);
-
-    dispatch(postPostThunk(frm));
+      try {
+        const response = await dispatch(postPostThunk(frm)).unwrap();
+        if(response){
+          navigate(`/detail/${response.id}`)
+        }
+      }
+      catch (error){
+        console.log(error)
+      }
   };
 
 

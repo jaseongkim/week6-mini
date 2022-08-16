@@ -12,13 +12,10 @@ const Detail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-
-
   const post = useSelector((state) => state.post.post);
 
   useEffect(() => {
     dispatch(getPostThunk(id));
-    console.log(id)
   }, [dispatch, id]);
   const member_Id = localStorage.getItem("memberId");
 
