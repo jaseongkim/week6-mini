@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import DropDown from "../components/DropDown";
 import { useDispatch } from "react-redux";
-import { editPostThunk } from "../redux/modules/postsSlice";
+import { editPostThunk } from "../redux/modules/postSlice";
 import { onEditPostHandler } from "../redux/modules/postSlice";
 import imageButton from "../images/imageButton.png";
+import { useNavigate } from "react-router-dom";
 new Blob([JSON.stringify()], { type: "application/json" });
 
 const DetailEdit = ({ id }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [fileImage, setFileImage] = useState("");
 
@@ -30,7 +32,7 @@ const DetailEdit = ({ id }) => {
     setFileImage(URL.createObjectURL(e.target.files[0]));
   };
 
-  const onEditPostingHandler = (e) => {
+  const onEditPostingHandler = async (e) => {
     if (
       upLoad.title === "" ||
       upLoad.content === "" ||
@@ -49,7 +51,15 @@ const DetailEdit = ({ id }) => {
     );
     frm.append("image", postimage.files[0]);
 
-    dispatch(editPostThunk({id,frm}));
+    try {
+      const response = await dispatch(editPostThunk({ id, frm })).unwrap();
+      console.log(response)
+      if (response) {
+        navigate(`/detail/${response.id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
