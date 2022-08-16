@@ -17,7 +17,10 @@ const Detail = () => {
 
   useEffect(() => {
     dispatch(getPostThunk(id));
+<<<<<<< Updated upstream
     console.log(id);
+=======
+>>>>>>> Stashed changes
   }, [dispatch, id]);
   const member_Id = localStorage.getItem("memberId");
 

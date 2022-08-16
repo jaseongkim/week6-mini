@@ -21,27 +21,14 @@ export const postPostThunk = createAsyncThunk(
         "Content-Type": "multipart/form-data",
         withCredentials: true,
       });
-      return window.location.replace("/");
+      return thunkAPI.fulfillWithValue(data.data);
     } catch (e) {
       return console.log(e);
     }
   }
 );
 
-export const editPostThunk = createAsyncThunk(
-  "EDIT_POST",
-  async (payload, thunkAPI) => {
-    try {
-      const data = await instance.put(`auth/posts/${payload.id}`, payload.frm, {
-        "Content-Type": "multipart/form-data",
-        withCredentials: true,
-      });
-      return window.location.replace(`/detail/${payload.id}`);
-    } catch (e) {
-      return thunkAPI.rejectWithValue(e);
-    }
-  }
-);
+
 
 export const delPostThunk = createAsyncThunk(
   "DEL_POST",
@@ -78,7 +65,10 @@ export const postsSlice = createSlice({
     [postPostThunk.rejected]: (state, action) => {
       state.error = action.payload;
     },
-    [postPostThunk.pending]: () => {},
+    [postPostThunk.pending]: (state, action) => {
+      
+    },
+
   },
 });
 
