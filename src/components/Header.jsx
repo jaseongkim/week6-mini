@@ -30,7 +30,6 @@ const Header = () => {
                     cursor: "pointer",
                     fontSize: "18px",
                   }}
-                  onClick={() => {}}
                 />
               </SearchContainer>
             </div>
