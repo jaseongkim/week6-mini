@@ -9,6 +9,7 @@ export const MyPageList = ({ member_Id }) => {
 
   const { dibs, uploads } = useSelector((state) => state.dibs);
 
+  console.log(member_Id);
   console.log(dibs);
   console.log(uploads);
 
@@ -22,21 +23,13 @@ export const MyPageList = ({ member_Id }) => {
       <ListTitle>찜한 목록</ListTitle>
       <ListWrapper>
         {dibs?.map((product) => {
-          if (product.memberId === member_Id) {
-            return <PostCards key={product.id} product={product} />;
-          } else {
-            return null;
-          }
+          return <PostCards key={product.id} product={product} />;
         })}
       </ListWrapper>
       <ListTitle>판매중인 목록</ListTitle>
       <ListWrapper>
         {uploads?.map((product) => {
-          if (product.memberId === member_Id) {
-            return <PostCards key={product.id} product={product} />;
-          } else {
-            return null;
-          }
+          return <PostCards key={product.id} product={product} />;
         })}
       </ListWrapper>
     </ListContainer>

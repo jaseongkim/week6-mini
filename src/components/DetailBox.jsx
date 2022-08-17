@@ -3,17 +3,11 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dibsThunk } from "../redux/modules/dibSlice";
 import { delPostThunk } from "../redux/modules/postsSlice";
-import {
-  onDonePostHandler,
-  onEditPostHandler,
-} from "../redux/modules/postSlice";
+import { donePostThunk, onEditPostHandler } from "../redux/modules/postSlice";
 import DetailEdit from "./DetailEdit";
 
 const DetailBox = ({ id, member_Id, post }) => {
   const dispatch = useDispatch();
-  const { dibs } = useSelector((state) => state.dibs);
-
-  console.log(post.isDone);
 
   return (
     <>
@@ -51,7 +45,7 @@ const DetailBox = ({ id, member_Id, post }) => {
                         삭제하기
                       </DeletePostbutton>
                       <IsDonePostbutton
-                        onClick={() => dispatch(onDonePostHandler())}
+                        onClick={() => dispatch(donePostThunk(id))}
                       >
                         판매완료
                       </IsDonePostbutton>
@@ -72,7 +66,7 @@ const DetailBox = ({ id, member_Id, post }) => {
                 </DipContanier>
               ) : (
                 <DipContanier>
-                  <DipButton onclick={() => dispatch(dibsThunk(id))}>
+                  <DipButton onClick={() => dispatch(dibsThunk(id))}>
                     찜하기!
                   </DipButton>
                 </DipContanier>
