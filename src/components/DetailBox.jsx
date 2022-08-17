@@ -14,8 +14,7 @@ import {
 } from "../redux/modules/dibsSlice";
 
 const DetailBox = ({ id, member_Id, post }) => {
-
-  console.log(post)
+  console.log(post);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(__getDibsThunk());
@@ -78,21 +77,23 @@ const DetailBox = ({ id, member_Id, post }) => {
                   </DipContanier>
                 ) : (
                   <DipContanier>
-                    <OnerPost>
-                      <IsDonePostbutton>판매완료</IsDonePostbutton>
-                    </OnerPost>
+                    <DonePost>
+                      <IsDoneDonePostbutton>판매완료</IsDoneDonePostbutton>
+                    </DonePost>
                   </DipContanier>
                 )
               ) : post.isDone ? (
                 <DipContanier>
-                  <OnerPost>
-                    <IsDonePostbutton>판매완료</IsDonePostbutton>
-                  </OnerPost>
+                  <DonePost>
+                    <IsDoneDonePostbutton>판매완료</IsDoneDonePostbutton>
+                  </DonePost>
                 </DipContanier>
               ) : (
                 <DipContanier>
                   {realMydibs ? (
-                    <DipCancleButton onClick={() => dispatch(dibsHateThunk(id))}>
+                    <DipCancleButton
+                      onClick={() => dispatch(dibsHateThunk(id))}
+                    >
                       찜하기취소!
                     </DipCancleButton>
                   ) : (
@@ -104,9 +105,9 @@ const DetailBox = ({ id, member_Id, post }) => {
               )
             ) : post.isDone ? (
               <DipContanier>
-                <OnerPost>
-                  <IsDonePostbutton>판매완료</IsDonePostbutton>
-                </OnerPost>
+                <DonePost>
+                  <IsDoneDonePostbutton>판매완료</IsDoneDonePostbutton>
+                </DonePost>
               </DipContanier>
             ) : (
               ""
@@ -277,6 +278,33 @@ const DipCancleButton = styled.button`
   background: #ff1e00;
   cursor: pointer;
   color: white;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const DonePost = styled.div`
+  width: 300px;
+  height: 50px;
+  border: none;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+`;
+
+const IsDoneDonePostbutton = styled.div`
+  width: 100px;
+  height: 50px;
+  border: none;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: #e0bb17;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  padding-top: 13px;
   opacity: 0.8;
   &:hover {
     opacity: 1;

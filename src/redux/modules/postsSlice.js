@@ -21,14 +21,16 @@ export const postPostThunk = createAsyncThunk(
         "Content-Type": "multipart/form-data",
         withCredentials: true,
       });
-      return thunkAPI.fulfillWithValue(data.data);
+      if (data.success === false) {
+        window.alert("이미지를 첨부해주세요!");
+      } else {
+        return thunkAPI.fulfillWithValue(data.data);
+      }
     } catch (e) {
       return console.log(e);
     }
   }
 );
-
-
 
 export const delPostThunk = createAsyncThunk(
   "DEL_POST",
@@ -65,10 +67,7 @@ export const postsSlice = createSlice({
     [postPostThunk.rejected]: (state, action) => {
       state.error = action.payload;
     },
-    [postPostThunk.pending]: (state, action) => {
-      
-    },
-
+    [postPostThunk.pending]: (state, action) => {},
   },
 });
 
