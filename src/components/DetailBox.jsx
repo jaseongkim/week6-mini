@@ -14,7 +14,6 @@ import {
 } from "../redux/modules/dibsSlice";
 
 const DetailBox = ({ id, member_Id, post }) => {
-  console.log(post);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(__getDibsThunk());
