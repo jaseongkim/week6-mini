@@ -13,6 +13,30 @@ export const __getDibsThunk = createAsyncThunk(
   }
 );
 
+export const dibsHateThunk = createAsyncThunk(
+  "postdibhate",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await instance.post(`auth/dibs/posts/${payload}`);
+      return thunkAPI.fulfillWithValue(payload)
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.code);
+    }
+  }
+);
+
+export const dibsLikeThunk = createAsyncThunk(
+  "postdibLike",
+  async (payload, thunkAPI) => {
+    try {
+      const data = await instance.post(`auth/dibs/posts/${payload.id}`);
+      return thunkAPI.fulfillWithValue(payload)
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.code);
+    }
+  }
+);
+
 const initialState = {
   dibs: [],
   uploads: [],
@@ -32,6 +56,24 @@ export const dibsSlice = createSlice({
       state.error = action.payload;
     },
     [__getDibsThunk.pending]: () => {},
+
+    [dibsHateThunk.fulfilled]: (state, action) => {
+      const new_dibs = state.dibs.filter(
+        (dib) => dib.id != action.payload
+      );
+      state.dibs = new_dibs;
+    },
+    [dibsHateThunk.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [dibsHateThunk.pending]: () => {},
+    [dibsLikeThunk.fulfilled]: (state, action) => {
+      state.dibs = [...state.dibs, action.payload]
+    },
+    [dibsLikeThunk.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [dibsLikeThunk.pending]: () => {},
   },
 });
 

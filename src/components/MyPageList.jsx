@@ -9,10 +9,6 @@ export const MyPageList = ({ member_Id }) => {
 
   const { dibs, uploads } = useSelector((state) => state.dibs);
 
-  console.log(member_Id);
-  console.log(dibs);
-  console.log(uploads);
-
   useEffect(() => {
     dispatch(__getDibsThunk());
     console.log("MypageList useEffect");
