@@ -4,7 +4,6 @@ import posts from "./modules/postsSlice";
 import members from "./modules/membersSlice";
 import comments from "./modules/commentsSlice";
 import dibs from "./modules/dibsSlice";
-import dib from "./modules/dibSlice";
 
 export default configureStore({
   reducer: {
@@ -13,6 +12,5 @@ export default configureStore({
     posts,
     comments,
     dibs,
-    dib,
   },
 });

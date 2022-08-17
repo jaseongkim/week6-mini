@@ -21,17 +21,7 @@ const Header = () => {
             <div style={{ display: "flex" }}>
               <LoginLogo src={logo} onClick={() => navigate("/")} />
               <div style={{ width: "36px" }}></div>
-              <SearchContainer>
-                <SearchForm>
-                  <SearchBar></SearchBar>
-                </SearchForm>
-                <VscSearch
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "18px",
-                  }}
-                />
-              </SearchContainer>
+
             </div>
             {!member_Id ? (
               <HeaderP onClick={() => navigate("/login")}>Login</HeaderP>
