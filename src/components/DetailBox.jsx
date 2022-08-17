@@ -1,13 +1,34 @@
 import styled from "styled-components";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { dibsThunk } from "../redux/modules/dibSlice";
 import { delPostThunk } from "../redux/modules/postsSlice";
 import { donePostThunk, onEditPostHandler } from "../redux/modules/postSlice";
 import DetailEdit from "./DetailEdit";
+import { useEffect } from "react";
+import isDoneimg from "../images/isDone.png";
+
+import {
+  __getDibsThunk,
+  dibsHateThunk,
+  dibsLikeThunk,
+} from "../redux/modules/dibsSlice";
 
 const DetailBox = ({ id, member_Id, post }) => {
+
+  console.log(post)
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(__getDibsThunk());
+  }, [dispatch, id]);
+  const { dibs } = useSelector((state) => state.dibs);
+  const Mydibs = dibs.map((product) => {
+    if (product.id === post.id) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  const realMydibs = Mydibs.includes(true);
 
   return (
     <>
@@ -18,7 +39,11 @@ const DetailBox = ({ id, member_Id, post }) => {
           <PostingContainer>
             <PostingMiniContainer>
               <PostingLeft>
-                <AddPostingImg src={post.imgUrl}></AddPostingImg>
+                {post.isDone ? (
+                  <AddPostingImg src={isDoneimg}></AddPostingImg>
+                ) : (
+                  <AddPostingImg src={post.imgUrl}></AddPostingImg>
+                )}
               </PostingLeft>
               <PostingRight>
                 <PostingText>제목</PostingText>
@@ -66,9 +91,15 @@ const DetailBox = ({ id, member_Id, post }) => {
                 </DipContanier>
               ) : (
                 <DipContanier>
-                  <DipButton onClick={() => dispatch(dibsThunk(id))}>
-                    찜하기!
-                  </DipButton>
+                  {realMydibs ? (
+                    <DipCancleButton onClick={() => dispatch(dibsHateThunk(id))}>
+                      찜하기취소!
+                    </DipCancleButton>
+                  ) : (
+                    <DipButton onClick={() => dispatch(dibsLikeThunk(post))}>
+                      찜하기!
+                    </DipButton>
+                  )}
                 </DipContanier>
               )
             ) : post.isDone ? (
@@ -229,6 +260,21 @@ const DipButton = styled.button`
   border-radius: 15px;
   box-sizing: border-box;
   background: #0064ff;
+  cursor: pointer;
+  color: white;
+  opacity: 0.8;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const DipCancleButton = styled.button`
+  width: 150px;
+  height: 50px;
+  border: none;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: #ff1e00;
   cursor: pointer;
   color: white;
   opacity: 0.8;
