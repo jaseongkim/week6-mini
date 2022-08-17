@@ -6,7 +6,6 @@ export const __getDibsThunk = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const { data } = await instance.get("auth/my-page");
-      console.log(data);
       return thunkAPI.fulfillWithValue(data);
     } catch (e) {
       return thunkAPI.rejectWithValue(e.code);
