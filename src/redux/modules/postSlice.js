@@ -13,6 +13,18 @@ export const getPostThunk = createAsyncThunk(
   }
 );
 
+export const donePostThunk = createAsyncThunk(
+  "DonePost",
+  async (payload, thunkAPI) => {
+    try {
+      const { data } = await instance.put(`auth/posts/${payload}/done`);
+      return thunkAPI.fulfillWithValue(data.data);
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.code);
+    }
+  }
+);
+
 export const editPostThunk = createAsyncThunk(
   "EDIT_POST",
   async (payload, thunkAPI) => {
@@ -55,9 +67,6 @@ export const postSlice = createSlice({
     onEditPostHandler: (state, action) => {
       state.post.isEditMode = !state.post.isEditMode;
     },
-    onDonePostHandler: (state, action) => {
-      state.post.isDone = true;
-    },
   },
   extraReducers: {
     [getPostThunk.fulfilled]: (state, action) => {
@@ -67,6 +76,13 @@ export const postSlice = createSlice({
       state.error = action.payload;
     },
     [getPostThunk.pending]: () => {},
+    [donePostThunk.fulfilled]: (state, action) => {
+      state.post.isDone = action.payload.isDone;
+    },
+    [donePostThunk.rejected]: (state, action) => {
+      state.error = action.payload;
+    },
+    [donePostThunk.pending]: () => {},
     [editPostThunk.fulfilled]: (state, action) => {
       state.post = action.payload;
     },
@@ -77,5 +93,5 @@ export const postSlice = createSlice({
   },
 });
 
-export const { onEditPostHandler, onDonePostHandler } = postSlice.actions;
+export const { onEditPostHandler } = postSlice.actions;
 export default postSlice.reducer;
