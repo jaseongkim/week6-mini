@@ -10,7 +10,8 @@ const PostCards = ({ product }) => {
   let navigate = useNavigate();
   const productCost = product.price
     .toString()
-    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","); IE/SAFARI에서 안돌아감..
 
   return (
     <PostCardContainer
