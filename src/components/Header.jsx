@@ -96,30 +96,3 @@ const InputGroup = styled.div`
   position: relative;
 `;
 
-const SearchContainer = styled.div`
-  cursor: text;
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 30px;
-  display: flex;
-  padding: 10px 10px;
-  color: rgb(12, 12, 12);
-  align-items: center;
-  margin-right: 20px;
-`;
-
-const SearchForm = styled.div`
-  flex: 1 1 0%;
-  margin-right: 12px;
-  line-height: normal;
-`;
-
-const SearchBar = styled.input`
-  background-color: transparent;
-  border-width: 0px;
-  border-radius: 2px;
-  outline-style: none;
-  color: var(--system-on-color);
-  width: 100%;
-  height: 100%;
-  font-size: 14px;
-`;
